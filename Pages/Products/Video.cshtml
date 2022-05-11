@@ -1,0 +1,10 @@
+﻿@page
+@model M05_UF3_P2_Template.Pages.Products.VideoModel
+@using M05_UF3_P2_Template.App_Code.Model
+@{
+}
+<form method="post">
+    <button type="submit" class="btn btn-primary float-right"><span class="material-icons">save</span></button>
+    <input type="number" asp-for="video.Product_Id" />
+    <input type="number"  asp-for="video.Duration" />
+</form>

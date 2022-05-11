@@ -17,6 +17,8 @@ namespace M05_UF3_P2_Template.App_Code.Model
         public float Size { get; set; }
         public int Developer_id { get; set; }
         public int Editor_id { get; set; }
+        public Company Developer { get; set; }
+        public Company Editor { get; set; }
 
         public Product()
         {
@@ -24,6 +26,10 @@ namespace M05_UF3_P2_Template.App_Code.Model
         }
 
         public Product(DataRow row)
+        {
+            Fill(row);
+        }
+        public void Fill(DataRow row)
         {
             try
             {
@@ -37,24 +43,39 @@ namespace M05_UF3_P2_Template.App_Code.Model
             {
                 Type = (TYPE)(int)row[1];
             }
-            catch 
+            catch
             {
 
                 Type = 0;
             }
             Summary = row[2].ToString();
             Icon = row[3].ToString();
-            Banner = row[4].ToString();
-            Trailer = row[5].ToString();
+            try{
+
+                Banner = row[4].ToString();
+            }
+            catch
+            {
+                Banner = "";
+            }
+            try
+            {
+                Trailer = row[5].ToString();
+
+            }
+            catch 
+            {
+                Trailer = "";
+            }
             try
             {
                 Price = float.Parse(row[6].ToString());
 
             }
-            catch 
+            catch
             {
 
-               Price = 0;
+                Price = 0;
             }
             try
             {
@@ -70,19 +91,23 @@ namespace M05_UF3_P2_Template.App_Code.Model
             {
                 Size = float.Parse(row[8].ToString());
             }
-            catch 
+            catch
             {
 
-                Size= 0;
+                Size = 0;
             }
             try
             {
                 Developer_id = (int)row[9];
             }
-            catch 
+            catch
             {
 
-                Developer_id= 0;
+                Size = 0;
+            }
+            if (Developer_id > 0)
+            {
+                Developer = new Company(Developer_id);
             }
             try
             {
@@ -90,10 +115,13 @@ namespace M05_UF3_P2_Template.App_Code.Model
             }
             catch
             {
-                Editor_id = 0;
+                Size = 0;
+            }
+            if (Editor_id > 0)
+            {
+                Editor = new Company(Editor_id);
             }
         }
-
         public Product(int Id) : this(DatabaseManager.Select("Product", null, "Id = " + Id + " ").Rows[0]) { }
         
         public bool Update()
@@ -106,7 +134,7 @@ namespace M05_UF3_P2_Template.App_Code.Model
                 new DatabaseManager.DB_Field("Banner", Banner),
                 new DatabaseManager.DB_Field("Trailer", Trailer),
                 new DatabaseManager.DB_Field("Price", Price),
-                new DatabaseManager.DB_Field("Publishing", Publishing),
+                //new DatabaseManager.DB_Field("Publishing", Publishing),
                 new DatabaseManager.DB_Field("Size", Size),
                 new DatabaseManager.DB_Field("Developer", Developer_id),
                 new DatabaseManager.DB_Field("Editor", Editor_id)
@@ -118,13 +146,13 @@ namespace M05_UF3_P2_Template.App_Code.Model
             DatabaseManager.DB_Field[] fields = new DatabaseManager.DB_Field[]
             {
                
-                new DatabaseManager.DB_Field("Type", Type),
+                new DatabaseManager.DB_Field("Type", (int)Type),
                 new DatabaseManager.DB_Field("Summary", Summary),
                 new DatabaseManager.DB_Field("Icon", Icon),
                 new DatabaseManager.DB_Field("Banner", Banner),
                 new DatabaseManager.DB_Field("Trailer", Trailer),
                 new DatabaseManager.DB_Field("Price", Price),
-                new DatabaseManager.DB_Field("Publishing", Publishing),
+                //new DatabaseManager.DB_Field("Publishing", Publishing),
                 new DatabaseManager.DB_Field("Size", Size),
                 new DatabaseManager.DB_Field("Developer", Developer_id),
                 new DatabaseManager.DB_Field("Editor", Editor_id)
@@ -140,9 +168,6 @@ namespace M05_UF3_P2_Template.App_Code.Model
         {
             return DatabaseManager.Delete("Product", id) > 0 ? true : false;
         }
-        public void LoadCompanies()
-        {
-
-        }
+       
     }
 }
