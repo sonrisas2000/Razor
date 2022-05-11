@@ -16,6 +16,7 @@ namespace M05_UF3_P2_Template.App_Code.Model
         public string Address { get; set; }
         public string Web { get; set; }
         public string Email { get; set; }
+        
 
 
         public Company()
@@ -76,6 +77,13 @@ namespace M05_UF3_P2_Template.App_Code.Model
         public static bool Remove(int id)
         {
             return DatabaseManager.Delete("Company", id) > 0 ? true : false;
+        }
+
+
+        public List<Product> GetProducts()
+        {
+
+            return new List<Product>();
         }
     }
 }
